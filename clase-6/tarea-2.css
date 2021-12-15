@@ -1,0 +1,67 @@
+body {
+    background-color: rgb(20, 128, 143);
+  }
+  
+  #image-background{
+    border-radius: 1%;
+    width: 50%;
+    height: 50%;
+    bottom: 50%;
+    top: 50%;
+  }
+  .tittle {
+    font-family: "Arial Narrow Bold";
+  }
+  
+  #add-member {
+    border-radius: 15%;
+    background-color: #008000;
+    color: white;
+    transition: 0.5s;
+  }
+  
+  #add-member:hover {
+    background-color: rgb(105, 241, 207);
+  }
+  
+  #remove-member {
+    border-radius: 15%;
+    background-color: white;
+    color: red;
+    transition: 0.5s;
+  }
+  
+  #remove-member:hover {
+    background-color: rgb(243, 247, 58);
+  }
+  
+  #label-members-annual-salary {
+    color: black;
+    font-size: 18px;
+    position: relative;
+    top: 50px;
+  }
+  
+  #button-calculate {
+    background-color: #199be6;
+    color: white;
+    border-radius: 15%;
+    position: relative;
+    top: 50px;
+    transition: 0s;
+  }
+  
+  #button-calculate:hover {
+    background-color: green;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  .result {
+    position: relative;
+    top: 60px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+  }
+  

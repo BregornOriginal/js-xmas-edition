@@ -1,0 +1,20 @@
+#titulo {
+  font-size: 15px;
+  color: royalblue;
+  margin: 1;
+}
+.input-clase {
+  font-size: 15px;
+  margin: 2px;
+}
+.label-clase {
+  margin: 3;
+  color: blue;
+}
+#integrantes {
+  color: orangered;
+  margin: 75px;
+}
+.oculto {
+  display: none;
+}

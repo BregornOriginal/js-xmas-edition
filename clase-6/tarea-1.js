@@ -21,69 +21,38 @@ const $formulariosGrupoFamiliar = document.querySelector(
   "#formularios-grupo-familiar"
 );
 
-const $divContenedorIntegrantes = document.createElement("div");
-$divContenedorIntegrantes.setAttribute("id", "contenedor-integrantes");
-
-const $body = document.getElementById("body");
-$body.appendChild($divContenedorIntegrantes);
-
-const $resultado = document.createElement("p");
-$resultado.setAttribute("id", "resultado");
-$body.appendChild($resultado);
-
-const $labelcalcular = document.createElement("label");
-$labelcalcular.className = "label-clase";
-$labelcalcular.innerText = "Calcular";
-
-const $botonEnviar = document.createElement("button");
-$botonEnviar.setAttribute("id", "enviar-datos");
-// $botonEnviar.setAttribute("type", SubmitEvent);
-$botonEnviar.className = "label-clase";
-$botonEnviar.innerText = "Enviar";
-$formulariosGrupoFamiliar.appendChild($botonEnviar);
-
-const $calcular = document.createElement("button");
-$calcular.appendChild($labelcalcular);
-$calcular.setAttribute("id", "calcular");
-// $calcular.setAttribute("type", SubmitEvent);
-$formulariosGrupoFamiliar.appendChild($calcular);
-
 document.querySelector("#calcular").className = "oculto";
 
-const $limpiarFormulario = document.createElement("button");
-$limpiarFormulario.setAttribute("id", "limpiar");
-$limpiarFormulario.className = "label-clase";
-$limpiarFormulario.innerText = "Limpiar";
-$formulariosGrupoFamiliar.appendChild($limpiarFormulario);
+const $limpiarFormulario = document.querySelector("#limpiar");
 
 $limpiarFormulario.onclick = function (event) {
-  event.preventDefault();
+  const $resultado = document.querySelector("#resultado");
   let $padre = document.getElementById("contenedor-integrantes");
   let $inputPrincipal = document.getElementById("cantidad-integrantes");
-  console.log($padre);
+  
   $inputPrincipal.value = "";
   $resultado.innerText = "";
   $padre.innerHTML = "";
   document.querySelector("#calcular").className = "oculto";
   document.querySelector("#enviar-datos").className = "visible";
+  
+  event.preventDefault();
 };
 
-// function crearInput(textoLabel) {
-//   const $nuevoForm = document.createElement("form");
-//   const $orderList = document.createElement("ol");
-//   $nuevoForm.appendChild($nuevoInput);
-//   $nuevoLabel.appendChild($orderList);
-//   $formulariosGrupoFamiliar.appendChild($nuevoLabel);
-// }
+const $botonEnviar = document.querySelector("#enviar-datos");
 
 $botonEnviar.onclick = function (event) {
+  
   document.querySelector("#enviar-datos").className = "oculto";
   document.querySelector("#calcular").className = "visible";
-  const $inputIntegrantes = document.querySelector("#cantidad-integrantes");
-  const cantidadDePersonas = Number($inputIntegrantes.value);
-  if (cantidadDePersonas > 0) {
 
-    for (let i = 1; i <= cantidadDePersonas; i++) {
+  const $ContenedorIntegrantes = document.querySelector("#contenedor-integrantes");
+  const $inputIntegrantes = document.querySelector("#cantidad-integrantes");
+  const cantidadDeIntegrantes = Number($inputIntegrantes.value);
+
+  if (cantidadDeIntegrantes > 0) {
+
+    for (let i = 1; i <= cantidadDeIntegrantes; i++) {
       const $nuevoInput = document.createElement("input");
       const $nuevoLabel = document.createElement("label");
 
@@ -95,47 +64,19 @@ $botonEnviar.onclick = function (event) {
       $nuevoLabel.innerText = `Integrante ${i}`;
       $nuevoLabel.appendChild($nuevoInput);
 
-      $divContenedorIntegrantes.appendChild($nuevoLabel);
+      $ContenedorIntegrantes.appendChild($nuevoLabel);
     }
   } else {
-    return alert("Por favor ingrese un número mayor a 0");
+    
   }
   event.preventDefault();
 };
 
-function calcularMayorEdad(arrayEdad) {
-  let valorMaximo = arrayEdad[0];
-  for (i = 0; i < arrayEdad.length; i++) {
-    if (arrayEdad[i] > valorMaximo) {
-      valorMaximo = arrayEdad[i];
-    }
-  }
-  return valorMaximo;
-}
-
-function calcularMenorEdad(arrayEdad) {
-  let valorMinimo = arrayEdad[0];
-  for (i = 0; i < arrayEdad.length; i++) {
-    if (arrayEdad[i] < valorMinimo) {
-      valorMinimo = arrayEdad[i];
-    }
-  }
-  return valorMinimo;
-}
-
-function calcularPromedioEdad(arrayEdad) {
-  let promedioEdad = 0;
-  let resultado = 0;
-  for (i = 0; i < arrayEdad.length; i++) {
-    resultado += +arrayEdad[i];
-    promedioEdad = resultado / arrayEdad.length;
-  }
-  return promedioEdad;
-}
 
 document.querySelector("#calcular").onclick = function (event) {
   let arrayEdad = [];
   let edadInputs = document.querySelectorAll("#valores");
+  const $resultado = document.querySelector("#resultado");
 
   for (let i = 0; i < edadInputs.length; i++) {
     arrayEdad.push(Number(edadInputs[i].value));
@@ -149,8 +90,26 @@ document.querySelector("#calcular").onclick = function (event) {
 
   event.preventDefault();
 };
-/*
-document.querySelector("#reload").onclick = function () {
-  location.reload();
+
+const $cantidadIntegrantes = document.querySelector("#cantidad-integrantes").value;
+
+
+function validarIntegrantes (){
+  if ($cantidadIntegrantes <= 0){
+    "Este campo debe ser mayor al número 0"
+  }
+  if ($cantidadIntegrantes === ""){
+    "Este campo debe contener al menos un número"
+  }
+  if (!/^[0-9]+$/.test($cantidadIntegrantes)) {
+    "Este campo solo acepta números"
+  }
+  return "";
 };
-*/
+
+function probarError(){
+  const $errores = document.querySelector("#errores");
+  const $error = document.createElement("li");
+  $error.innerText = $errores;
+  $errores.appendChild($error);
+}

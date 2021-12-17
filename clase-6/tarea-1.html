@@ -9,12 +9,22 @@
   </head>
   <body id="body">
     <form id="formularios-grupo-familiar">
-      <label for="cantidad-integrantes">Ingrese la cantidad de integrantes </label>
-      <input id="cantidad-integrantes" type="number"/>
+      <label for="cantidad-integrantes"
+        >Ingrese la cantidad de integrantes
+      </label>
+      <input id="cantidad-integrantes" type="number" />
+      
+      <div id="contenedor-integrantes"></div>
+      <button id="enviar-datos"><label class="label-clase">Enviar</label></button>
+      <button id="calcular"><label class="label-clase">Calcular</label></button>
+      <button id="limpiar"><label class="label-clase">Limpiar</label></button>
+
+      <p id="resultado"></p>
+
+      <ul id="errores"></ul>
     </form>
-    <p id="resultado"></p>
 
-
+    <script src="tarea-1-calculos.js"></script>
     <script src="tarea-1.js"></script>
   </body>
 </html>

@@ -1,16 +1,16 @@
-function probarValidarIntegrantes() {
+function testValidateIntegrantes() {
   console.assert(
-    validarIntegrantes("") === "Este campo debe contener al menos un número",
-    "Validar integrantes no validó que integrantes no sea vacío"
+    validateMembers("") === "This field must be greater than the number 0",
+    "Validate members did not validate that members are not empty"
   );
   console.assert(
-    validarIntegrantes(-2) === "Este campo debe ser mayor al número 0",
-    "Validar integrantes no validó que integrantes sea un número mayor a 0"
+    validateMembers(-2) === "This field must have one number at least",
+    "Validate members did not validate that members is a number greater than 0"
   );
   console.assert(
-      validarIntegrantes("fda") === "Este campo solo acepta números",
-      "Validar integrantes no validó que integrantes contenga números"
+      validateMembers("fda") === "This field only accept numbers",
+      "Validate members did not validate that members contain numbers"
   );
 }
 
-probarValidarIntegrantes();
+testValidateIntegrantes();

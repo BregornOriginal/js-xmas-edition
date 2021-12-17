@@ -1,5 +1,5 @@
-#titulo {
-  font-size: 15px;
+#tittle {
+  font-size: 40px;
   color: royalblue;
   margin: 1;
 }
@@ -11,10 +11,10 @@
   margin: 3;
   color: blue;
 }
-#integrantes {
+#members {
   color: orangered;
   margin: 75px;
 }
-.oculto {
+.hidden {
   display: none;
 }

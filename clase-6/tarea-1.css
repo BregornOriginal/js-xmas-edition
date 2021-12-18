@@ -1,5 +1,5 @@
 #tittle {
-  font-size: 40px;
+  font-size: 30px;
   color: royalblue;
   margin: 1;
 }
@@ -17,4 +17,7 @@
 }
 .hidden {
   display: none;
+}
+.error {
+  border: 2px solid red;
 }

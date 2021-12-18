@@ -16,35 +16,36 @@ document.querySelector("#calculate").className = "hidden";
 const $cleanFormulary = document.querySelector("#clean");
 
 $cleanFormulary.onclick = function (event) {
+  const $errors = document.querySelector("#errors");
+  $errors.innerText = "";
+
+  document.querySelector("#number-members").className = "";
   const $result = document.querySelector("#result");
-  let $pather = document.getElementById("container-members");
   let $principalInput = document.getElementById("number-members");
-  
+  const $newMember = document.querySelector("#list-of-members");
+
   $principalInput.value = "";
   $result.innerText = "";
-  $pather.innerHTML = "";
+  $newMember.innerHTML = "";
   document.querySelector("#calculate").className = "hidden";
-  document.querySelector("#send-data").className = "visible";
-  
+  document.querySelector("#send-data").className = "visible"; 
+
   event.preventDefault();
 };
 
-const $sendButton = document.querySelector("#send-data");
-
-$sendButton.onclick = function (event) {
-  
-  document.querySelector("#send-data").className = "hidden";
-  document.querySelector("#calculate").className = "visible";
-
-  const $containerMembers = document.querySelector("#container-members");
+function createMembers() {
   const $inputMembers = document.querySelector("#number-members");
   const numberOfMembers = Number($inputMembers.value);
 
   if (numberOfMembers > 0) {
-
     for (let i = 1; i <= numberOfMembers; i++) {
       const $newInputMember = document.createElement("input");
       const $NewLabelMember = document.createElement("label");
+      const $NewListOfMember = document.createElement("li");
+      const $newMember = document.querySelector("#list-of-members");
+
+
+      $newMember.appendChild($NewListOfMember);
 
       $newInputMember.setAttribute("type", "number");
       $newInputMember.setAttribute("id", "values");
@@ -52,16 +53,35 @@ $sendButton.onclick = function (event) {
       $newInputMember.className = "input-clase";
 
       $NewLabelMember.innerText = `Member # ${i}`;
+      $NewListOfMember.appendChild($NewLabelMember);
       $NewLabelMember.appendChild($newInputMember);
-
-      $containerMembers.appendChild($NewLabelMember);
+            
+      const $errors = document.querySelector("#errors");
+      $errors.innerText = "";
     }
-  } else {
+  }
+};
+
+const $sendButton = document.querySelector("#send-data");
+
+$sendButton.onclick = function (event) {
     
+  const amountOfMembers = document.querySelector("#number-members").value;
+
+  const erorrAmountOfMembers = validateAmountOfMembers(Number(amountOfMembers));
+
+  if (erorrAmountOfMembers) {
+    errors["number-members"] = erorrAmountOfMembers;
+    handleErrors(errors);
+  } else {
+    delete errors["number-members"];
+    document.querySelector("#number-members").className = "";
+    document.querySelector("#send-data").className = "hidden";
+    document.querySelector("#calculate").className = "visible";
+    createMembers();
   }
   event.preventDefault();
 };
-
 
 document.querySelector("#calculate").onclick = function (event) {
   let arrayAge = [];
@@ -91,23 +111,48 @@ document.querySelector("#calculate").onclick = function (event) {
 
 const $numberOfMembers = document.querySelector("#number-members").value;
 
+function validateAmountOfMembers($numberOfMembers) {
 
-function validarIntegrantes (){
-  if ($numberOfMembers <= 0){
-    "This field must be greater than the number 0"
-  }
-  if ($numberOfMembers === ""){
-    "This field must have one number at least"
-  }
+  if ($numberOfMembers === "") {
+    return "This field must have one number at least";
+  };
+
+  if ($numberOfMembers <= 0) {
+    return "This field must be greater than the number 0";
+  };
+  
   if (!/^[0-9]+$/.test($numberOfMembers)) {
-    "This field only accept numbers"
-  }
+    return "This field only accept numbers";
+  };
   return "";
 };
 
-function tryError(){
+let errors = {};
+
+function handleErrors(errors) {
+  const keys = Object.keys(errors);
   const $errors = document.querySelector("#errors");
-  const $error = document.createElement("li");
-  $error.innerText = $errors;
-  $errors.appendChild($error);
-}
+  let errorsCounter = 0;
+
+  keys.forEach(function (key) {
+    const error = errors[key];
+
+    if (error) {
+      $familaryGroupFormulary[key].className = "error";
+      console.log($familaryGroupFormulary[key]);
+      errorsCounter++;
+
+      const $error = document.createElement("li");
+      $error.innerText = error;
+      $error.id = [key] + "error";
+      console.log($error)
+
+      if (!document.querySelector(`#${key}error`)) $errors.appendChild($error);
+    } else {
+      if (document.querySelector(`#${key}error`)) {
+        document.querySelector(`#${key}error`).remove();
+    }
+  }
+  });
+  return errorsCounter;
+};

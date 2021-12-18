@@ -157,4 +157,4 @@ function handleErrors(errors) {
   return errorsCounter;
 };
 
-// Gracias Lucho
+// Gracias Lucho.

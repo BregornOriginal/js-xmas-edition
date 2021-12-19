@@ -68,7 +68,7 @@ $sendButton.onclick = function (event) {
     
   const amountOfMembers = document.querySelector("#number-members").value;
 
-  const erorrAmountOfMembers = validateAmountOfMembers(Number(amountOfMembers));
+  const erorrAmountOfMembers = validateAmountOfMembers(amountOfMembers);
 
   if (erorrAmountOfMembers) {
     errors["number-members"] = erorrAmountOfMembers;
@@ -120,7 +120,11 @@ function validateAmountOfMembers($numberOfMembers) {
   if ($numberOfMembers <= 0) {
     return "This field must be greater than the number 0";
   };
-  
+
+  if ($numberOfMembers >= 50) {
+    return "The max amount of members accepted is 50 maximum";
+  };
+
   if (!/^[0-9]+$/.test($numberOfMembers)) {
     return "This field only accept numbers";
   };
@@ -156,5 +160,3 @@ function handleErrors(errors) {
   });
   return errorsCounter;
 };
-
-// Gracias Lucho.

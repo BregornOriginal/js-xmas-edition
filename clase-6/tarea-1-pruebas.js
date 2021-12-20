@@ -23,4 +23,13 @@ function testValidateAmountOfMembers() {
   );
 }
 
+function testValidateAgeOfMembers() {
+  console.assert(
+    validateAgeOfMembers("") === "Please complete this flield whit a number",
+    "Validate age of members did not validate that age are not empty"
+  );
+ 
+}
+
 testValidateAmountOfMembers();
+testValidateAgeOfMembers()

@@ -83,21 +83,47 @@ $sendButton.onclick = function (event) {
   event.preventDefault();
 };
 
-document.querySelector("#calculate").onclick = function (event) {
+function getAgeOfMembers (){
   let arrayAge = [];
   let ageInputs = document.querySelectorAll("#values");
-  const $result = document.querySelector("#result");
 
   for (let i = 0; i < ageInputs.length; i++) {
     arrayAge.push(Number(ageInputs[i].value));
   }
+  return arrayAge;
+};
 
+document.querySelector("#calculate").onclick = function (event) {
+  let counter = 0;
+  const ages = getAgeOfMembers();
+
+  ages.forEach(function(age) {
+
+    document.querySelector(`#values-${counter + 1}`).className = '';
+    let errorAgeOfMember = validateAgeOfMembers(age);
+
+    if (errorAgeOfMember) {
+      errors[`values-${counter + 1}`] = errorAgeOfMember;
+      console.log(errorAgeOfMember);
+      counter++
+
+  }else{
+    delete errors[`values-${counter + 1}`];
+    counter++;
+  }
+  });
+
+  const isSuccessfull = handleErrors(ages, errors) === 0;
+
+  if (isSuccessfull){
+  
+  const $result = document.querySelector("#result");
   let youngerAge = calculateYoungerAge(arrayAge);
   let olderAge = calculateOlderAge(arrayAge);
   let averageAge = calculateAverageAge(arrayAge);
 
   $result.innerText = `The oldest member is ${olderAge} years old. The youngest member is ${youngerAge} years old. The average age of the members is ${averageAge} years.`;
-
+  }
   event.preventDefault();
 };
 
@@ -128,6 +154,17 @@ function validateAmountOfMembers($numberOfMembers) {
   if (!/^[0-9]+$/.test($numberOfMembers)) {
     return "This field only accept numbers";
   };
+  return "";
+};
+
+const ageInputs = document.querySelector("#values");
+
+function validateAgeOfMembers(ageInputs){
+
+  if(ageInputs >= 150 ) {
+    return "The age of member can't by more than 150"
+  };
+
   return "";
 };
 

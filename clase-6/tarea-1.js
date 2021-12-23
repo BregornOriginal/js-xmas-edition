@@ -11,24 +11,26 @@ const $familaryGroupFormulary = document.querySelector(
   "#familary-group-formulary"
 );
 
-document.querySelector("#calculate").className = "hidden";
+document.querySelector("#button-calculate").className = "hidden";
 
-const $cleanFormulary = document.querySelector("#clean");
+const $cleanFormulary = document.querySelector("#button-clean");
+$cleanFormulary.className = "hidden";
 
 $cleanFormulary.onclick = function (event) {
+  document.querySelector("#amount-of-members").className = "";
   const $errors = document.querySelector("#errors");
   $errors.innerText = "";
 
   document.querySelector("#number-members").className = "";
   const $result = document.querySelector("#result");
-  let $principalInput = document.getElementById("number-members");
+  let $inputOfMembers = document.getElementById("number-members");
   const $newMember = document.querySelector("#list-of-members");
 
-  $principalInput.value = "";
+  $inputOfMembers.value = "";
   $result.innerText = "";
   $newMember.innerHTML = "";
-  document.querySelector("#calculate").className = "hidden";
-  document.querySelector("#send-data").className = "visible"; 
+  document.querySelector("#button-calculate").className = "hidden";
+  document.querySelector("#button-send-data").className = "visible";
 
   event.preventDefault();
 };
@@ -44,28 +46,30 @@ function createMembers() {
       const $NewListOfMember = document.createElement("li");
       const $newMember = document.querySelector("#list-of-members");
 
-
       $newMember.appendChild($NewListOfMember);
 
       $newInputMember.setAttribute("type", "number");
-      $newInputMember.setAttribute("id", "values");
+      $newInputMember.setAttribute("id", `values-${i}`);
       $newInputMember.setAttribute("placeholder", "Age");
       $newInputMember.className = "input-clase";
 
-      $NewLabelMember.innerText = `Member # ${i}`;
+      $NewLabelMember.innerText = `# ${i} Member age: `;
       $NewListOfMember.appendChild($NewLabelMember);
       $NewLabelMember.appendChild($newInputMember);
-            
+
       const $errors = document.querySelector("#errors");
       $errors.innerText = "";
+      $cleanFormulary.className = "hidden";
     }
   }
 };
 
-const $sendButton = document.querySelector("#send-data");
+const $sendButton = document.querySelector("#button-send-data");
 
 $sendButton.onclick = function (event) {
-    
+  $cleanFormulary.className = "hidden";
+  const $errors = document.querySelector("#errors");
+  $errors.innerText = "";
   const amountOfMembers = document.querySelector("#number-members").value;
 
   const erorrAmountOfMembers = validateAmountOfMembers(amountOfMembers);
@@ -75,54 +79,55 @@ $sendButton.onclick = function (event) {
     handleErrors(errors);
   } else {
     delete errors["number-members"];
-    document.querySelector("#number-members").className = "";
-    document.querySelector("#send-data").className = "hidden";
-    document.querySelector("#calculate").className = "visible";
+    $cleanFormulary.className = "";
+    document.querySelector("#amount-of-members").className = "hidden";
+    document.querySelector("#button-send-data").className = "hidden";
+    document.querySelector("#button-calculate").className = "";
     createMembers();
   }
   event.preventDefault();
 };
 
-function getAgeOfMembers (){
+function getAgeOfMembers() {
   let arrayAge = [];
-  let ageInputs = document.querySelectorAll("#values");
-
-  for (let i = 0; i < ageInputs.length; i++) {
-    arrayAge.push(Number(ageInputs[i].value));
+  let $age = document.querySelectorAll("#list-of-members input");
+  for (let i = 0; i < $age.length; i++) {
+    arrayAge.push(Number($age[i].value));
   }
   return arrayAge;
 };
 
-document.querySelector("#calculate").onclick = function (event) {
+document.querySelector("#button-calculate").onclick = function (event) {
+  
+  const $errors = document.querySelector("#errors");
+  $errors.innerText = "";
   let counter = 0;
   const ages = getAgeOfMembers();
 
-  ages.forEach(function(age) {
-
-    document.querySelector(`#values-${counter + 1}`).className = '';
+  ages.forEach(function (age) {
+    document.querySelector(`#values-${counter + 1}`).className = "";
     let errorAgeOfMember = validateAgeOfMembers(age);
 
     if (errorAgeOfMember) {
       errors[`values-${counter + 1}`] = errorAgeOfMember;
-      console.log(errorAgeOfMember);
-      counter++
-
-  }else{
-    delete errors[`values-${counter + 1}`];
-    counter++;
-  }
+      counter++;
+      $cleanFormulary.className = "hidden";
+    } else {
+      delete errors[`values-${counter + 1}`];
+      counter++;
+    }
   });
 
-  const isSuccessfull = handleErrors(ages, errors) === 0;
+  const isSuccessfull = handleErrors(errors) === 0;
 
-  if (isSuccessfull){
-  
-  const $result = document.querySelector("#result");
-  let youngerAge = calculateYoungerAge(arrayAge);
-  let olderAge = calculateOlderAge(arrayAge);
-  let averageAge = calculateAverageAge(arrayAge);
+  if (isSuccessfull) {
+    $cleanFormulary.className = "";
+    const $result = document.querySelector("#result");
+    let youngerAge = calculateYoungerAge(ages);
+    let olderAge = calculateOlderAge(ages);
+    let averageAge = calculateAverageAge(ages);
 
-  $result.innerText = `The oldest member is ${olderAge} years old. The youngest member is ${youngerAge} years old. The average age of the members is ${averageAge} years.`;
+    $result.innerText = `The oldest member is ${olderAge} years old. The youngest member is ${youngerAge} years old. The average age of the members is ${averageAge} years.`;
   }
   event.preventDefault();
 };
@@ -135,36 +140,37 @@ document.querySelector("#calculate").onclick = function (event) {
 // TIP: Las edades no pueden tener decimales.
 //
 
-const $numberOfMembers = document.querySelector("#number-members").value;
 
-function validateAmountOfMembers($numberOfMembers) {
 
-  if ($numberOfMembers === "") {
+function validateAmountOfMembers(amountOfMembers) {
+  if (amountOfMembers === "") {
     return "This field must have one number at least";
   };
 
-  if ($numberOfMembers <= 0) {
+  if (amountOfMembers <= 0) {
     return "This field must be greater than the number 0";
   };
 
-  if ($numberOfMembers >= 50) {
+  if (amountOfMembers >= 50) {
     return "The max amount of members accepted is 50 maximum";
   };
 
-  if (!/^[0-9]+$/.test($numberOfMembers)) {
+  if (!/^[0-9]+$/.test(amountOfMembers)) {
     return "This field only accept numbers";
   };
   return "";
 };
 
-const ageInputs = document.querySelector("#values");
-
-function validateAgeOfMembers(ageInputs){
-
-  if(ageInputs >= 150 ) {
-    return "The age of member can't by more than 150"
+function validateAgeOfMembers(age) {
+  if (age >= 150) {
+    return "The age of member can't by more than 150";
   };
-
+  if (age <= 0) {
+    return "The age of member must by higher than 0";
+  };
+  if (!/^[0-9]+$/.test(age)) {
+    return "This field only accept numbers";
+  };
   return "";
 };
 
@@ -177,23 +183,22 @@ function handleErrors(errors) {
 
   keys.forEach(function (key) {
     const error = errors[key];
-
     if (error) {
       $familaryGroupFormulary[key].className = "error";
-      console.log($familaryGroupFormulary[key]);
       errorsCounter++;
 
       const $error = document.createElement("li");
       $error.innerText = error;
       $error.id = [key] + "error";
-      console.log($error)
-
-      if (!document.querySelector(`#${key}error`)) $errors.appendChild($error);
+      
+      if (!document.querySelector(`#values-${key}error`))
+      $errors.appendChild($error);
     } else {
+      $familaryGroupFormulary[key].className = "";
       if (document.querySelector(`#${key}error`)) {
         document.querySelector(`#${key}error`).remove();
+      }
     }
-  }
   });
   return errorsCounter;
 };

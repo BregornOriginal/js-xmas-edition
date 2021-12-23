@@ -1,9 +1,15 @@
+#body{
+  background-color:lightsteelblue
+}
 #tittle {
+  font-family: cursive;
   font-size: 30px;
-  color: royalblue;
+  color: purple;
   margin: 1;
 }
 .input-clase {
+  box-shadow: 1px 1px orange;
+  border-radius: 3%;
   font-size: 15px;
   margin: 2px;
 }
@@ -19,5 +25,23 @@
   display: none;
 }
 .error {
-  border: 2px solid red;
+  border: 1px solid red;
+}
+#button-send-data{
+  border-radius: 15%;
+    background-color: greenyellow;
+    color: red;
+    transition: 0.5s;
+}
+#button-calculate{
+  border-radius: 20%;
+  background-color: orange;
+
+}
+#button-clean{
+  border-radius: 20%;
+  background-color: white;
+}
+#errors{
+  color: red;
 }

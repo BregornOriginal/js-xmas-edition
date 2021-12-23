@@ -3,32 +3,33 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Task 1 - Class 6</title>
+    <title>Task 1 v2.0 - Class 6</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" type="text/css" media="screen" href="tarea-1.css" />
   </head>
   <body id="body">
-    <form id="familary-group-formulary">
+    <form id="familary-group-formulary" onkeypress="return anular(event)">
+      <h1 id="tittle">Age form of family members</h1>
 
-      <h1 id="tittle">FAMILY MEMBERS</h1>
+      <div id="amount-of-members">
+        <h2>Enter the amount of family members: </h2>
 
-      <label for="">Enter the amount of members </label>
-
-      <input id="number-members" type="number" />
+        <input id="number-members" type="number" />
+      </div>
 
       <div id="container-members">
         <ul id="list-of-members"></ul>
       </div>
 
-      <button id="send-data">
+      <button id="button-send-data">
         <label class="label-clase">Send</label>
       </button>
 
-      <button id="calculate">
+      <button id="button-calculate">
         <label class="label-clase">Calculate</label>
       </button>
 
-      <button id="clean">
+      <button id="button-clean">
         <label class="label-clase">Clean</label>
       </button>
 

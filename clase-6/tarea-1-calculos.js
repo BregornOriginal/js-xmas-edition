@@ -27,3 +27,9 @@ function calculateOlderAge(arrayAge) {
     }
     return averageAge;
   }
+
+  function anular(e) {
+    tecla = (document) ? e.keyCode : e.which;
+    return (tecla != 13);
+  }
+  

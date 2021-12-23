@@ -25,11 +25,18 @@ function testValidateAmountOfMembers() {
 
 function testValidateAgeOfMembers() {
   console.assert(
-    validateAgeOfMembers("") === "Please complete this flield whit a number",
-    "Validate age of members did not validate that age are not empty"
+    validateAgeOfMembers(160) === "The age of member can't by more than 150",
+    "Validate age of members did not validate that age is lower than 150"
   );
- 
+  console.assert(
+    validateAgeOfMembers(-1) === "The age of member must by higher than 0",
+    "Validate age of members did not validate that it is a number greater than 0"
+  );
+  console.assert(
+    validateAgeOfMembers("fdas") === "This field only accept numbers",
+    "Validate members did not validate that members age are numbers"
+  );
 }
 
 testValidateAmountOfMembers();
-testValidateAgeOfMembers()
+testValidateAgeOfMembers();

@@ -45,6 +45,10 @@ function createMembers() {
       const $NewLabelMember = document.createElement("label");
       const $NewListOfMember = document.createElement("li");
       const $newMember = document.querySelector("#list-of-members");
+      const $fda = document.createElement("li");
+
+      $fda.setAttribute("id", `error-member${i}`);
+      $fda.setAttribute("class", "hidden-error");
 
       $newMember.appendChild($NewListOfMember);
 
@@ -55,6 +59,7 @@ function createMembers() {
 
       $NewLabelMember.innerText = `# ${i} Member age: `;
       $NewListOfMember.appendChild($NewLabelMember);
+      $NewLabelMember.appendChild($fda);
       $NewLabelMember.appendChild($newInputMember);
 
       const $errors = document.querySelector("#errors");
@@ -180,6 +185,7 @@ function handleErrors(errors) {
   const keys = Object.keys(errors);
   const $errors = document.querySelector("#errors");
   let errorsCounter = 0;
+  const $fda = document.querySelector(".hidden-error");
 
   keys.forEach(function (key) {
     const error = errors[key];
@@ -192,7 +198,7 @@ function handleErrors(errors) {
       $error.id = [key] + "error";
       
       if (!document.querySelector(`#values-${key}error`))
-      $errors.appendChild($error);
+      $fda.appendChild($error);
     } else {
       $familaryGroupFormulary[key].className = "";
       if (document.querySelector(`#${key}error`)) {

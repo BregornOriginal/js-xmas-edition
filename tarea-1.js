@@ -7,7 +7,7 @@ Punto bonus: Crear un botón para "empezar de nuevo" que empiece el proceso nuev
 borrando los inputs ya creados (investigar cómo en MDN).
 */
 
-const $familaryGroupFormulary = document.querySelector(
+const $familaryGroupForm = document.querySelector(
   "#familary-group-formulary"
 );
 
@@ -18,8 +18,6 @@ $cleanFormulary.className = "hidden";
 
 $cleanFormulary.onclick = function (event) {
   document.querySelector("#amount-of-members").className = "";
-  const $errors = document.querySelector("#errors");
-  $errors.innerText = "";
 
   document.querySelector("#number-members").className = "";
   const $result = document.querySelector("#result");
@@ -31,6 +29,8 @@ $cleanFormulary.onclick = function (event) {
   $newMember.innerHTML = "";
   document.querySelector("#button-calculate").className = "hidden";
   document.querySelector("#button-send-data").className = "visible";
+  document.querySelector("#number-memberserror").innerText = "";
+  $cleanFormulary.className = "hidden";
 
   event.preventDefault();
 };
@@ -45,10 +45,6 @@ function createMembers() {
       const $NewLabelMember = document.createElement("label");
       const $NewListOfMember = document.createElement("li");
       const $newMember = document.querySelector("#list-of-members");
-      const $fda = document.createElement("li");
-
-      $fda.setAttribute("id", `error-member${i}`);
-      $fda.setAttribute("class", "hidden-error");
 
       $newMember.appendChild($NewListOfMember);
 
@@ -57,13 +53,12 @@ function createMembers() {
       $newInputMember.setAttribute("placeholder", "Age");
       $newInputMember.className = "input-clase";
 
+      $NewLabelMember.setAttribute = 
       $NewLabelMember.innerText = `# ${i} Member age: `;
       $NewListOfMember.appendChild($NewLabelMember);
-      $NewLabelMember.appendChild($fda);
       $NewLabelMember.appendChild($newInputMember);
 
-      const $errors = document.querySelector("#errors");
-      $errors.innerText = "";
+      
       $cleanFormulary.className = "hidden";
     }
   }
@@ -73,16 +68,16 @@ const $sendButton = document.querySelector("#button-send-data");
 
 $sendButton.onclick = function (event) {
   $cleanFormulary.className = "hidden";
-  const $errors = document.querySelector("#errors");
-  $errors.innerText = "";
   const amountOfMembers = document.querySelector("#number-members").value;
 
   const erorrAmountOfMembers = validateAmountOfMembers(amountOfMembers);
 
   if (erorrAmountOfMembers) {
+    document.querySelector("#number-members").className = "error";
     errors["number-members"] = erorrAmountOfMembers;
     handleErrors(errors);
   } else {
+    document.querySelector("#number-members").className = "";
     delete errors["number-members"];
     $cleanFormulary.className = "";
     document.querySelector("#amount-of-members").className = "hidden";
@@ -104,20 +99,18 @@ function getAgeOfMembers() {
 
 document.querySelector("#button-calculate").onclick = function (event) {
   
-  const $errors = document.querySelector("#errors");
-  $errors.innerText = "";
   let counter = 0;
   const ages = getAgeOfMembers();
-
+  
   ages.forEach(function (age) {
-    document.querySelector(`#values-${counter + 1}`).className = "";
     let errorAgeOfMember = validateAgeOfMembers(age);
-
+    
     if (errorAgeOfMember) {
+      document.querySelector(`#values-${counter + 1}`).className = "error";
       errors[`values-${counter + 1}`] = errorAgeOfMember;
       counter++;
-      $cleanFormulary.className = "hidden";
     } else {
+      document.querySelector(`#values-${counter + 1}`).className = "input-clase";
       delete errors[`values-${counter + 1}`];
       counter++;
     }
@@ -183,28 +176,29 @@ let errors = {};
 
 function handleErrors(errors) {
   const keys = Object.keys(errors);
-  const $errors = document.querySelector("#errors");
   let errorsCounter = 0;
-  const $fda = document.querySelector(".hidden-error");
+  
 
   keys.forEach(function (key) {
+    const $inputLabel = $familaryGroupForm[key].parentElement;
     const error = errors[key];
-    if (error) {
-      $familaryGroupFormulary[key].className = "error";
-      errorsCounter++;
 
-      const $error = document.createElement("li");
+    if (error) {
+      errorsCounter++;
+      
+      const $error = document.createElement("p");
       $error.innerText = error;
       $error.id = [key] + "error";
-      
-      if (!document.querySelector(`#values-${key}error`))
-      $fda.appendChild($error);
-    } else {
-      $familaryGroupFormulary[key].className = "";
-      if (document.querySelector(`#${key}error`)) {
+
+      if(!document.querySelector(`#${key}error`)){
+        $inputLabel.appendChild($error);
+      } else {
+        $inputLabel.appendChild($error);
+        if (document.querySelector(`#${key}error`));
         document.querySelector(`#${key}error`).remove();
-      }
+      
     }
+  }
   });
   return errorsCounter;
 };

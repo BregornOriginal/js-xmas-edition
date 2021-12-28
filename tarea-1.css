@@ -17,6 +17,12 @@
   margin: 3;
   color: blue;
 }
+#number-members{
+  box-shadow: 1px 1px orange;
+  border-radius: 3%;
+  font-size: 15px;
+  margin: 2px;
+}
 #members {
   color: orangered;
   margin: 75px;
@@ -24,7 +30,11 @@
 .hidden {
   display: none;
 }
-.error {
+.error{
+  box-shadow: 1px 1px orange;
+  border-radius: 3%;
+  font-size: 15px;
+  margin: 2px;
   border: 1px solid red;
 }
 #button-send-data{

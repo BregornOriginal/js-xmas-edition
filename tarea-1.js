@@ -111,7 +111,6 @@ document.querySelector("#button-calculate").onclick = function (event) {
       counter++;
     } else {
       document.querySelector(`#values-${counter + 1}`).className = "input-clase";
-      document.querySelector(`#values-${counter + 1}error`).innerText = "";
 
       delete errors[`values-${counter + 1}`];
       counter++;

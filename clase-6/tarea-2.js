@@ -9,14 +9,12 @@ menor salario anual, salario anual promedio y salario mensual promedio.
 Punto bonus: si hay inputs vacíos, ignorarlos en el cálculo (no contarlos como 0).
 */
 
-const $bodyHtml = document.querySelector("body");
 const $form = document.querySelector("form");
 
 const $buttonCalculate = document.createElement("button");
 $buttonCalculate.innerText = "Calculate";
 $buttonCalculate.setAttribute("id", "button-calculate");
 $buttonCalculate.className = "hidden";
-const $labelButtonCalculate = document.createElement("label");
 
 const $newDiv = document.createElement("div");
 $newDiv.setAttribute("id", "container-annual-salary");
@@ -28,14 +26,20 @@ document.querySelector("#add-member").onclick = function (event) {
   const $newInput = document.createElement("input");
   const $newLabel = document.createElement("label");
 
-  $newLabel.setAttribute("id", "label-members-annual-salary");
-  $newLabel.innerText = "Member annual salary";
-  $newLabel.appendChild($newInput);
-  $newDiv.appendChild($newLabel);
-  $newInput.setAttribute("type", "number");
-  $newInput.setAttribute("id", "members-annual-salary");
-  $newInput.setAttribute("placeholder", "Annual salary");
-  $newInput.value = 0;
+  inputNumber = document.querySelectorAll(
+    "#container-annual-salary input"
+  ).length;
+
+  for (let i = 0; i <= inputNumber; i++) {
+    $newLabel.setAttribute("id", "label-members-annual-salary");
+    $newLabel.innerText = "Member annual salary";
+    $newLabel.appendChild($newInput);
+    $newDiv.appendChild($newLabel);
+    $newInput.setAttribute("type", "number");
+    $newInput.setAttribute("id", `members-annual-salary${i}`);
+    $newInput.setAttribute("placeholder", "Annual salary");
+    $newInput.value = 0;
+  }
 
   event.preventDefault();
   return false;
@@ -45,58 +49,58 @@ const $buttonRemoveMember = document.getElementById("remove-member");
 
 $buttonRemoveMember.onclick = function (event) {
   let $dad = document.getElementById("container-annual-salary");
-  let $children = document.getElementById("label-members-annual-salary");
-  $dad.removeChild($children);
+  $dad.lastChild.remove();
+  console.log(document.querySelectorAll(
+    "#container-annual-salary input"
+  ));
+  if (!document.querySelector("#label-members-annual-salary")) {
+    document.querySelector("#container-strong").className = "hidden";
+    document.querySelector("#button-calculate").className = "hidden";
+
+  }
   event.preventDefault();
 };
 
-function calculateMaxSalary(arraySalary) {
-  let maxSalary = arraySalary[0];
-  for (i = 0; i < arraySalary.length; i++) {
-    if (arraySalary[i] > maxSalary) {
-      maxSalary = arraySalary[i];
-    }
-  }
-  return maxSalary;
-};
-
-function calculateMinSalary(arraySalary) {
-  let minSalary = arraySalary[0];
-  for (i = 0; i < arraySalary.length; i++) {
-    if (arraySalary[i] < minSalary) {
-      minSalary = arraySalary[i];
-    }
-  }
-  return minSalary;
-};
-
-function calculateAverageAnnualSalary(arraySalary) {
-  let arraySalaryNoZero = [];
-  let averageAnnualSalary = 0;
-  let result = 0;
-  for (i = 0; i < arraySalary.length; i++) {
-    if (arraySalary[i] > 0) {
-      arraySalaryNoZero.push(arraySalary[i]);
-    }
-  }
-  for (let i = 0; i < arraySalaryNoZero.length; i++) {
-    result = arraySalaryNoZero[i] + result;
-  }
-  if (result > 0) {
-    averageAnnualSalary = result / arraySalaryNoZero.length;
-  }
-  return averageAnnualSalary;
-};
-
-function calculateAverageMensualSalary(averageAnnualSalary) {
-  const monthsInAYear = 12;
-  averageMensualSalary = averageAnnualSalary / monthsInAYear;
-  return averageMensualSalary;
+function getAnnualSalaryOfMember() {
+  
+  let arraySalary = [];
+  let inputAnnualSalary = inputNumber = document.querySelectorAll(
+    "#container-annual-salary input"
+  );
+  console.log (document.querySelectorAll(
+    "#container-annual-salary input"
+  ))
+  for (let i = 0; i < inputAnnualSalary.length; i++) {
+    if (inputAnnualSalary[i].value != "") {
+      arraySalary.push(Number(inputAnnualSalary[i].value));
+    };
+  };
+  return arraySalary;
 };
 
 document.querySelector("#button-calculate").onclick = function (event) {
-  let arraySalary = [];
-  let inputAnnualSalary = document.querySelectorAll("#members-annual-salary");
+  console.log(document.querySelectorAll(
+    "#container-annual-salary input"
+  ));
+  let memberSalary = getAnnualSalaryOfMember();
+  let counter = 0;
+  console.log(memberSalary);
+
+  memberSalary.forEach(function (salary) {
+
+    let errorAnnualSalary = validateAnnualSalary(salary);
+    if (errorAnnualSalary) {
+      errors[`members-annual-salary${counter}`] = errorAnnualSalary;
+      console.log(errors[`members-annual-salary${counter}`]);
+      counter++;
+    } else {
+      console.log(errors[`members-annual-salary${counter}`])
+      delete errors[`members-annual-salary${counter}`];
+      console.log(errors[`members-annual-salary${counter}`])
+
+      counter++;
+    }
+  });
 
   const $divStrong = document.createElement("div");
   $divStrong.setAttribute("id", "container-strong");
@@ -111,23 +115,64 @@ document.querySelector("#button-calculate").onclick = function (event) {
     $divContenedorStrong[i].remove();
   }
 
-  for (let i = 0; i < inputAnnualSalary.length; i++) {
-    if (inputAnnualSalary[i].value != "") {
-      arraySalary.push(Number(inputAnnualSalary[i].value));
-    }
-  }
+  const isSuccessfull = handleErrors(errors) === 0;
 
-  let maxSalary = calculateMaxSalary(arraySalary);
-  let minSalary = calculateMinSalary(arraySalary);
-  let averageAnnualSalary = calculateAverageAnnualSalary(arraySalary);
-  let averageMensualSalary = calculateAverageMensualSalary(averageAnnualSalary);
+  if (isSuccessfull) {
+    let maxSalary = calculateMaxSalary(memberSalary);
+    let minSalary = calculateMinSalary(memberSalary);
+    let averageAnnualSalary = calculateAverageAnnualSalary(memberSalary);
+    let averageMensualSalary =
+      calculateAverageMensualSalary(averageAnnualSalary);
 
-  $resultStrong.innerText = `
+    $resultStrong.innerText = `
   The maximum salary is ${maxSalary} dollars. 
   The minimum salary is ${minSalary} dollars. 
   The average annual salary is ${averageAnnualSalary} dollars. 
   The average mensual salary is ${averageMensualSalary} dollars.`;
-
+  }
   event.preventDefault();
   return false;
 };
+
+//  TAREA CLASE 8
+// A las 2 tareas de la clase 6, ponerles las validaciones que consideren
+// necesarias (usando RegExp, Objetos, forEach, poner estilos, mostrar los errores
+//     en la interfaz de usuario y escribir pruebas).
+
+// TIP: Las edades no pueden tener decimales.
+//
+
+function validateAnnualSalary(salary) {
+
+  if (salary < 0) {
+    return "Please enter a value greater than 0";
+  };
+  if (!/^[0-9]+$/.test(salary)) {
+    return "This field only accept numbers";
+  };
+  return "";
+};
+
+let errors = {};
+
+function handleErrors(errors) {
+  const keys = Object.keys(errors);
+  console.log(errors)
+  console.log(keys);
+  let errorsCounter = 0;
+
+  keys.forEach(function (key) {
+    const errorSalary = errors[key];
+    console.log(errorSalary)
+
+    if (errorSalary) {
+      errorsCounter++;
+      $form[key].className = "error";
+      console.log($form[key])
+    } else {
+      console.log($form[key])
+      $form[key].className = "";
+    }
+  });
+  return errorsCounter;
+}

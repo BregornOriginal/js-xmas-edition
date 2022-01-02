@@ -64,4 +64,6 @@ body {
     top: 60px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
   }
-  
+  .error {
+    border: 1px solid red;
+  }

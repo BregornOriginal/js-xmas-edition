@@ -1,5 +1,5 @@
 /*
-TAREA:
+TAREA CLASE 6:
 Crear una interfaz que permita agregar ó quitar (botones agregar y quitar)
 inputs+labels para completar el salario anual de cada integrante de la familia que trabaje.
 
@@ -8,6 +8,14 @@ menor salario anual, salario anual promedio y salario mensual promedio.
 
 Punto bonus: si hay inputs vacíos, ignorarlos en el cálculo (no contarlos como 0).
 */
+
+//  TAREA CLASE 8
+// A las 2 tareas de la clase 6, ponerles las validaciones que consideren
+// necesarias (usando RegExp, Objetos, forEach, poner estilos, mostrar los errores
+//     en la interfaz de usuario y escribir pruebas).
+
+// TIP: Las edades no pueden tener decimales.
+//
 
 const $form = document.querySelector("form");
 
@@ -22,24 +30,23 @@ $form.appendChild($newDiv);
 $form.appendChild($buttonCalculate);
 
 document.querySelector("#add-member").onclick = function (event) {
-  $buttonCalculate.className = "view";
+
+  $buttonCalculate.className = "";
+
   const $newInput = document.createElement("input");
   const $newLabel = document.createElement("label");
-
-  inputNumber = document.querySelectorAll(
-    "#container-annual-salary input"
-  ).length;
+  let inputNumber = document.querySelectorAll("#container-annual-salary input").length;
 
   for (let i = 0; i <= inputNumber; i++) {
     $newLabel.setAttribute("id", "label-members-annual-salary");
-    $newLabel.innerText = "Member annual salary";
+    $newLabel.innerText = `Member annual salary #: ${i}`;
     $newLabel.appendChild($newInput);
     $newDiv.appendChild($newLabel);
     $newInput.setAttribute("type", "number");
     $newInput.setAttribute("id", `members-annual-salary${i}`);
     $newInput.setAttribute("placeholder", "Annual salary");
     $newInput.value = 0;
-  }
+  };
 
   event.preventDefault();
   return false;
@@ -48,56 +55,45 @@ document.querySelector("#add-member").onclick = function (event) {
 const $buttonRemoveMember = document.getElementById("remove-member");
 
 $buttonRemoveMember.onclick = function (event) {
+
   let $dad = document.getElementById("container-annual-salary");
+  errors = {};
   $dad.lastChild.remove();
-  console.log(document.querySelectorAll(
-    "#container-annual-salary input"
-  ));
   if (!document.querySelector("#label-members-annual-salary")) {
     document.querySelector("#container-strong").className = "hidden";
     document.querySelector("#button-calculate").className = "hidden";
-
-  }
+  };
   event.preventDefault();
 };
 
 function getAnnualSalaryOfMember() {
-  
-  let arraySalary = [];
-  let inputAnnualSalary = inputNumber = document.querySelectorAll(
-    "#container-annual-salary input"
-  );
-  console.log (document.querySelectorAll(
-    "#container-annual-salary input"
-  ))
-  for (let i = 0; i < inputAnnualSalary.length; i++) {
-    if (inputAnnualSalary[i].value != "") {
-      arraySalary.push(Number(inputAnnualSalary[i].value));
-    };
+
+  let salaries = [];
+  let inputNumber = document.querySelectorAll("#container-annual-salary input");
+  for (let i = 0; i < inputNumber.length; i++) {
+    if (inputNumber[i].value != "") {
+      salaries.push(Number(inputNumber[i].value));
+    }
   };
-  return arraySalary;
+  return salaries;
 };
 
 document.querySelector("#button-calculate").onclick = function (event) {
-  console.log(document.querySelectorAll(
-    "#container-annual-salary input"
-  ));
+
   let memberSalary = getAnnualSalaryOfMember();
   let counter = 0;
-  console.log(memberSalary);
 
   memberSalary.forEach(function (salary) {
-
     let errorAnnualSalary = validateAnnualSalary(salary);
     if (errorAnnualSalary) {
       errors[`members-annual-salary${counter}`] = errorAnnualSalary;
-      console.log(errors[`members-annual-salary${counter}`]);
       counter++;
     } else {
-      console.log(errors[`members-annual-salary${counter}`])
+      if (document.querySelector(`#members-annual-salary${counter}error`)) {
+        document.querySelector(`#members-annual-salary${counter}error`).remove();
+      }
+      document.querySelector(`#members-annual-salary${counter}`).className = "";
       delete errors[`members-annual-salary${counter}`];
-      console.log(errors[`members-annual-salary${counter}`])
-
       counter++;
     }
   });
@@ -122,28 +118,23 @@ document.querySelector("#button-calculate").onclick = function (event) {
     let minSalary = calculateMinSalary(memberSalary);
     let averageAnnualSalary = calculateAverageAnnualSalary(memberSalary);
     let averageMensualSalary =
-      calculateAverageMensualSalary(averageAnnualSalary);
+      calculateAverageMonthlySalary(averageAnnualSalary);
 
     $resultStrong.innerText = `
   The maximum salary is ${maxSalary} dollars. 
   The minimum salary is ${minSalary} dollars. 
   The average annual salary is ${averageAnnualSalary} dollars. 
   The average mensual salary is ${averageMensualSalary} dollars.`;
-  }
+  };
   event.preventDefault();
   return false;
 };
 
-//  TAREA CLASE 8
-// A las 2 tareas de la clase 6, ponerles las validaciones que consideren
-// necesarias (usando RegExp, Objetos, forEach, poner estilos, mostrar los errores
-//     en la interfaz de usuario y escribir pruebas).
-
-// TIP: Las edades no pueden tener decimales.
-//
-
 function validateAnnualSalary(salary) {
 
+  if (salary === "") {
+    return "Please enter a value on this field";
+  }
   if (salary < 0) {
     return "Please enter a value greater than 0";
   };
@@ -156,22 +147,24 @@ function validateAnnualSalary(salary) {
 let errors = {};
 
 function handleErrors(errors) {
+
   const keys = Object.keys(errors);
-  console.log(errors)
-  console.log(keys);
   let errorsCounter = 0;
 
   keys.forEach(function (key) {
+    const errorElement = $form[key].parentElement;
     const errorSalary = errors[key];
-    console.log(errorSalary)
 
     if (errorSalary) {
       errorsCounter++;
       $form[key].className = "error";
-      console.log($form[key])
-    } else {
-      console.log($form[key])
-      $form[key].className = "";
+
+      const $descriptionErrors = document.createElement("p");
+      $descriptionErrors.id = [key] + "error";
+      $descriptionErrors.innerText = errorSalary;
+
+      if (!document.querySelector(`#${key}error`))
+        errorElement.appendChild($descriptionErrors);
     }
   });
   return errorsCounter;

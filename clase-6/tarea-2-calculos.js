@@ -1,42 +1,42 @@
-function calculateMaxSalary(arraySalary) {
-    let maxSalary = arraySalary[0];
-    for (i = 0; i < arraySalary.length; i++) {
-      if (arraySalary[i] > maxSalary) {
-        maxSalary = arraySalary[i];
+function calculateMaxSalary(salaries) {
+    let maxSalary = salaries[0];
+    for (i = 0; i < salaries.length; i++) {
+      if (salaries[i] > maxSalary) {
+        maxSalary = salaries[i];
       }
     }
     return maxSalary;
   };
   
-  function calculateMinSalary(arraySalary) {
-    let minSalary = arraySalary[0];
-    for (i = 0; i < arraySalary.length; i++) {
-      if (arraySalary[i] < minSalary) {
-        minSalary = arraySalary[i];
+  function calculateMinSalary(salaries) {
+    let minSalary = salaries[0];
+    for (i = 0; i < salaries.length; i++) {
+      if (salaries[i] < minSalary) {
+        minSalary = salaries[i];
       }
     }
     return minSalary;
   };
   
-  function calculateAverageAnnualSalary(arraySalary) {
-    let arraySalaryNoZero = [];
+  function calculateAverageAnnualSalary(salaries) {
+    let validSalaries = [];
     let averageAnnualSalary = 0;
     let result = 0;
-    for (i = 0; i < arraySalary.length; i++) {
-      if (arraySalary[i] > 0) {
-        arraySalaryNoZero.push(arraySalary[i]);
+    for (i = 0; i < salaries.length; i++) {
+      if (salaries[i] > 0) {
+        validSalaries.push(salaries[i]);
       }
     }
-    for (let i = 0; i < arraySalaryNoZero.length; i++) {
-      result = arraySalaryNoZero[i] + result;
+    for (let i = 0; i < validSalaries.length; i++) {
+      result = validSalaries[i] + result;
     }
     if (result > 0) {
-      averageAnnualSalary = result / arraySalaryNoZero.length;
+      averageAnnualSalary = result / validSalaries.length;
     }
     return averageAnnualSalary;
   };
   
-  function calculateAverageMensualSalary(averageAnnualSalary) {
+  function calculateAverageMonthlySalary(averageAnnualSalary) {
     const monthsInAYear = 12;
     averageMensualSalary = averageAnnualSalary / monthsInAYear;
     return averageMensualSalary;
